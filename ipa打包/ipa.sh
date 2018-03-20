@@ -6,10 +6,11 @@ version=$2
 project_name=$(basename $rootPath)
 # scheme 默认与工程名同名
 scheme_name=$project_name
-# Info.plist 文件路径
-infoPath=$project_name/Info.plist
 # 打包时间 设置为 build 号码
 BuildDate=$(date +%Y%m%d%H%M)
+
+# Info.plist 文件路径
+infoPath=$project_name/Info.plist
 
 # 指定项目地址
 workspace_path="$rootPath/$scheme_name.xcworkspace"
@@ -21,9 +22,6 @@ archive_path="$output_path/archive/${scheme_name}_${BuildDate}.xcarchive"
 ipa_path="$output_path/$scheme_name"
 # 指定输出ipa名称
 ipa_name="${scheme_name}_${BuildDate}.ipa"
-# 指定打包所使用的输出方式，目前支持app-store, package, ad-hoc, enterprise, development, 和developer-id，即xcodebuild的method参数
-export_method="app-store"
-
 
 echo "============================ 正在 修改Build ============================"
 cd $rootPath
@@ -41,7 +39,7 @@ fastlane fir scheme:"${scheme_name}" \
 
 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!! 打包完成 !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
-#上传到fir
-echo "============================ 开始上传 ipa 文件 ============================"
-fir publish "${ipa_path}/${ipa_name}" -T "${Fir_token}" -c
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!! 上传完成 !!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+# 上传到fir
+# echo "============================ 开始上传 ipa 文件 ============================"
+# fir publish "${ipa_path}/${ipa_name}" -T "${Fir_token}" -c
+# echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!! 上传完成 !!!!!!!!!!!!!!!!!!!!!!!!!!!!"

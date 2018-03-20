@@ -13,21 +13,36 @@
 default_platform(:ios)
 
 platform :ios do
-
+	# 修改版本号和build号函数 例: version:1.1.1 build:123
 	def prepare_version(options)
-    increment_version_number(
-        version_number: options[:version]
-    )
- 
-    increment_build_number(
-        build_number: options[:build]
-    )
+    increment_build_number_in_plist(
+  		# target: [target_name],
+  		build_number: options[:build]
+  	)
+  	increment_version_number_in_plist(
+    	version_number: options[:version]
+    )  
 	end
-
+	# Fir 上传
+	def firUpload 
+		token="554c539d32252425f397dbf39e1831d9"
+		firim(firim_api_token:token)
+	end
+	
  	desc "Description of what the lane does"
  	lane :custom_lane do
     # add actions here: https://docs.fastlane.tools/actions
   	end
+
+  	desc "测试修改版本号和build号"
+  	lane :beta do |options|
+  		prepare_version(options)
+   	end
+
+   	desc "上传到 iTunesconnect"
+   	lane :testflight 
+   		build
+    end
 
   	desc "打包上传到 Fir"
 	lane :fir do |options|
@@ -41,10 +56,12 @@ platform :ios do
 		output_name: options[:ipa_name],
 		export_method:"development"                 # app-store, ad-hoc, package, enterprise, development, developer-id
 		)	
+		firim(firim_api_token:"554c539d32252425f397dbf39e1831d9")
 		#使用自动证书管理
 		# enable_automatic_code_signing(path: "HUIpaTest.xcodeproj")
 		# 蒲公英自动上传
 		# pgyer(api_key: "xxx", user_key: "xxx", password: "xxx", install_type: "2")
 	end
 
+	
 end
